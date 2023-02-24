@@ -1,5 +1,5 @@
 "use strict";
-
+//typewriter//
 const str = document.querySelector("#typewriter").textContent;
 document.querySelector("#typewriter").textContent = "";
 let iterator = 0;
@@ -19,6 +19,7 @@ function loop() {
     setTimeout(loop, 100);
   }
 }
+///////////////
 
 window.addEventListener("DOMContentLoaded", start);
 
@@ -49,10 +50,10 @@ async function getData() {
   displayList();
 }
 
+//Clean data, from the student json file// 
 function prepareObjects(data) {
   data.forEach((jsonObject) => {
     const student = Object.create(Student);
-
     const nameArray = jsonObject.fullname.trim().split(" ");
     let firstName, middleName, lastName, nickName, gender;
     const nickNameIndex = nameArray.findIndex((name, index) => {
@@ -121,13 +122,14 @@ function prepareObjects(data) {
     allStudents.push(student);
   });
 }
-displayList();
-
+//display student list// 
 function displayList() {
   document.querySelector("#list tbody").innerHTML = "";
   allStudents.forEach(displayStudent);
 }
+/////////////
 
+//Clone students to html template for the list//
 function displayStudent(student) {
   const clone = document
     .querySelector("template#student")
@@ -141,3 +143,4 @@ function displayStudent(student) {
   clone.querySelector("[data-field=gender]").innerHTML = student.gender;
   document.querySelector("#list tbody").appendChild(clone);
 }
+///////////////
