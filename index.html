@@ -8,6 +8,35 @@
     <title>Hacked Hogwarts Student List</title>
   </head>
   <body>
+    <div class="splash">
+      <h1 id="typewriter" class="typewritten">
+        List of Hogwarts students year 1991
+      </h1>
+      <img src="hogwarts.png" alt="" width="500px" />
+    </div>
+
+    <div class="list_options">
+      <label id="filter">
+        Filter by house:
+        <select name="filter" class="filter">
+          <option value="All">All</option>
+          <option value="Gryffindor">Gryffindor</option>
+          <option value="Ravenclaw">Ravenclaw</option>
+          <option value="Hufflepuff">Hufflepuff</option>
+          <option value="Slytherin">Slytherin</option>
+        </select>
+      </label>
+
+      <label id="sort">
+        Sort by:
+        <select name="sort" class="sort">
+          <option value="lastName">Last name A-Z</option>
+          <option value="firstName">First name A-Z</option>
+          <option value="house">House A-Z</option>
+        </select>
+      </label>
+    </div>
+
     <table id="list">
       <thead>
         <tr>
