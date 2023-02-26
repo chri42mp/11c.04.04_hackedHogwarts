@@ -27,3 +27,46 @@ body {
 #sorting th.sortby[data-sort-direction="desc"]::after {
   content: "↑";
 }
+#list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+}
+article {
+  background-image: url(frame.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 23rem;
+  width: 18rem;
+}
+.slytherin {
+  background-image: url(slytherin.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.ravenclaw {
+  background-image: url(rawenclaw.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.hufflepuff {
+  background-image: url(hufflepuff.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.gryffindor {
+  background-image: url(griffindor.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.house {
+  text-align: end;
+  color: white;
+}
+.container {
+  padding-block: 3rem;
+  width: 12.5rem;
+}
+.id {
+  text-align: center;
+}

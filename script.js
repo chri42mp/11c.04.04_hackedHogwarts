@@ -25,6 +25,12 @@ const settings = {
   sortBy: "name",
   sortDir: "asc",
 };
+const houseMap = {
+  slytherin: "slytherin",
+  ravenclaw: "ravenclaw",
+  hufflepuff: "hufflepuff",
+  gryffindor: "gryffindor",
+};
 
 window.addEventListener("DOMContentLoaded", start);
 
@@ -132,7 +138,7 @@ function prepareObjects(data) {
 }
 //--------------------DISPLAY STUDENT LIST--------------------
 function displayList() {
-  document.querySelector("#list tbody").innerHTML = "";
+  document.querySelector("#list").innerHTML = "";
   filteredStudents.forEach(displayStudent);
 }
 /////////////
@@ -146,10 +152,14 @@ function displayStudent(student) {
   // clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
   // clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
   clone.querySelector("[data-field=lastname]").innerHTML = student.lastName;
-  // clone.querySelector("[data-field=house]").innerHTML = student.house;
-  // clone.querySelector("[data-field=image]").src = student.imgSrc;
+  clone.querySelector("[data-field=house]").innerHTML = student.house;
+  clone.querySelector("[data-field=house]").innerHTML = student.house;
+  clone
+    .querySelector("[data-field=house]")
+    .classList.add(houseMap[student.house.toLowerCase()]);
+  clone.querySelector("[data-field=image]").src = student.imgSrc;
   // clone.querySelector("[data-field=gender]").innerHTML = student.gender;
-  document.querySelector("#list tbody").appendChild(clone);
+  document.querySelector("#list").appendChild(clone);
 }
 
 //----------------------FILTER BY HOUSE-------------------------------

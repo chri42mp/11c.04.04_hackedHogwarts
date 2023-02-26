@@ -25,44 +25,34 @@
         <option value="slytherin">Slytherin</option>
       </select>
     </p>
-
-    <table id="list">
-      <thead>
-        <tr id="sorting">
-          <th>Sort by:</th>
-          <th
-            data-action="sort"
-            data-sort-direction="asc"
-            data-sort="firstname"
-          >
-            Firstname
-          </th>
-          <th
-            data-action="sort"
-            data-sort-direction="desc"
-            data-sort="lastname"
-          >
-            Lastname
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- rows of data will go here -->
-      </tbody>
+    <table>
+      <tr id="sorting">
+        <th>Sort by:</th>
+        <th data-action="sort" data-sort-direction="asc" data-sort="firstname">
+          Firstname
+        </th>
+        <th data-action="sort" data-sort-direction="desc" data-sort="lastname">
+          Lastname
+        </th>
+      </tr>
     </table>
+    <main id="list">
+      <!-- rows of data will go here -->
+    </main>
 
     <template id="student">
-      <tr>
-        <td data-field="firstname">Firstname</td>
-        <!-- <td data-field="middlename">Middlename</td>
-        <td data-field="nickname">Nickname</td> -->
-        <td data-field="lastname">Lastname</td>
-        <!-- <td data-field="gender">Gender</td> -->
-        <!-- <td>
-          <img data-field="image" src="" alt="" width="50px" height="50px" />
-        </td> -->
-        <!-- <td data-field="house">House</td> -->
-      </tr>
+      <article>
+        <div class="container">
+          <p class="id">STUDENT ID</p>
+          <img data-field="image" src="" alt="" width="125px" />
+          <p class="house" data-field="house">House</p>
+          <p data-field="firstname">Firstname</p>
+          <!-- <p data-field="middlename">Middlename</p> -->
+          <!-- <p data-field="nickname">Nickname</p> -->
+          <p data-field="lastname">Lastname</p>
+          <!-- <p data-field="gender">Gender</p> -->
+        </div>
+      </article>
     </template>
     <script src="script.js"></script>
   </body>
