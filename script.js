@@ -1,5 +1,5 @@
 "use strict";
-//typewriter//
+//-----------------------TYPEWRITER---------------------
 const str = document.querySelector("#typewriter").textContent;
 document.querySelector("#typewriter").textContent = "";
 let iterator = 0;
@@ -20,15 +20,22 @@ function loop() {
   }
 }
 ///////////////
+const settings = {
+  filter: "all",
+  sortBy: "name",
+  sortDir: "asc",
+};
 
 window.addEventListener("DOMContentLoaded", start);
 
 function start() {
   console.log("ready");
   getData();
+  addEventListeners();
 }
 
-const allStudents = [];
+let filteredStudents = [];
+let allStudents = [];
 const Student = {
   firstName: null,
   lastName: null,
@@ -38,7 +45,7 @@ const Student = {
   house: null,
   gender: null,
 };
-
+//------------------FETCH STUDENT DATA-----------------
 async function getData() {
   const response = await fetch(
     "https://petlatkea.dk/2021/hogwarts/students.json"
@@ -50,7 +57,7 @@ async function getData() {
   displayList();
 }
 
-//Clean data, from the student json file// 
+//-----------------CLEAN DATA FROM THE STUDENT JSON FILE---------------
 function prepareObjects(data) {
   data.forEach((jsonObject) => {
     const student = Object.create(Student);
@@ -121,15 +128,16 @@ function prepareObjects(data) {
       jsonObject.house.trim().slice(1).toLowerCase();
     allStudents.push(student);
   });
+  filteredStudents = allStudents;
 }
-//display student list// 
+//--------------------DISPLAY STUDENT LIST--------------------
 function displayList() {
   document.querySelector("#list tbody").innerHTML = "";
-  allStudents.forEach(displayStudent);
+  filteredStudents.forEach(displayStudent);
 }
 /////////////
 
-//Clone students to html template for the list//
+//----------------CLONE STUDENTS TO THE HTML TEMPLATE FOR THE LIST-----------
 function displayStudent(student) {
   const clone = document
     .querySelector("template#student")
@@ -143,4 +151,40 @@ function displayStudent(student) {
   clone.querySelector("[data-field=gender]").innerHTML = student.gender;
   document.querySelector("#list tbody").appendChild(clone);
 }
-///////////////
+
+//----------------------FILTER BY HOUSE-------------------------------
+
+function addEventListeners() {
+  document
+    .querySelector("[data-action='filter']")
+    .addEventListener("input", selectFilter);
+}
+
+function selectFilter(event) {
+  const filter = event.target.value;
+  console.log(`Filter selected: ${filter}`);
+  filterList(filter);
+}
+
+function filterList(filter) {
+  if (filter === "gryffindor") {
+    filteredStudents = allStudents.filter(
+      (student) => student.house === "Gryffindor"
+    );
+  } else if (filter === "hufflepuff") {
+    filteredStudents = allStudents.filter(
+      (student) => student.house === "Hufflepuff"
+    );
+  } else if (filter === "ravenclaw") {
+    filteredStudents = allStudents.filter(
+      (student) => student.house === "Ravenclaw"
+    );
+  } else if (filter === "slytherin") {
+    filteredStudents = allStudents.filter(
+      (student) => student.house === "Slytherin"
+    );
+  } else {
+    filteredStudents = allStudents;
+  }
+  displayList();
+}
