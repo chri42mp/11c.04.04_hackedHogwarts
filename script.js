@@ -143,12 +143,12 @@ function displayStudent(student) {
     .querySelector("template#student")
     .content.cloneNode(true);
   clone.querySelector("[data-field=firstname]").innerHTML = student.firstName;
-  clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
-  clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
+  // clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
+  // clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
   clone.querySelector("[data-field=lastname]").innerHTML = student.lastName;
-  clone.querySelector("[data-field=house]").innerHTML = student.house;
-  clone.querySelector("[data-field=image]").src = student.imgSrc;
-  clone.querySelector("[data-field=gender]").innerHTML = student.gender;
+  // clone.querySelector("[data-field=house]").innerHTML = student.house;
+  // clone.querySelector("[data-field=image]").src = student.imgSrc;
+  // clone.querySelector("[data-field=gender]").innerHTML = student.gender;
   document.querySelector("#list tbody").appendChild(clone);
 }
 
@@ -158,6 +158,10 @@ function addEventListeners() {
   document
     .querySelector("[data-action='filter']")
     .addEventListener("input", selectFilter);
+
+  document
+    .querySelectorAll("[data-action='sort']")
+    .forEach((button) => button.addEventListener("click", selectSort));
 }
 
 function selectFilter(event) {
@@ -187,4 +191,54 @@ function filterList(filter) {
     filteredStudents = allStudents;
   }
   displayList();
+}
+
+//--------------------SORTING--------------------
+
+let direction = 1;
+
+function selectSort(event) {
+  const sortBy = event.target.dataset.sort;
+  const sortDir = event.target.dataset.sortDirection;
+
+  const oldElement = document.querySelector(`[data-sort=${settings.sortBy}]`);
+  if (oldElement !== null) {
+    oldElement.classList.remove("sortby");
+  }
+  event.target.classList.add("sortby");
+  if (sortDir === "asc") {
+    event.target.dataset.sortDirection = "desc";
+  } else {
+    event.target.dataset.sortDirection = "asc";
+  }
+  setSort(sortBy, sortDir);
+}
+
+function setSort(sortBy, sortDir) {
+  settings.sortBy = sortBy;
+  settings.sortDir = sortDir;
+  buildList();
+}
+
+function sortList(sortedList) {
+  if (settings.sortDir === "desc") {
+    direction = -1;
+  } else {
+    direction = 1;
+  }
+  sortedList = sortedList.sort(sortByProperty);
+  return sortedList;
+}
+
+function sortByProperty(studentA, studentB) {
+  if (studentA[settings.sortBy] < studentB[settings.sortBy]) {
+    return -1 * direction;
+  } else {
+    return 1 * direction;
+  }
+}
+function buildList() {
+  const sortedList = sortList(allStudents);
+  const filteredList = filterList(sortedList);
+  displayList(filteredList);
 }
