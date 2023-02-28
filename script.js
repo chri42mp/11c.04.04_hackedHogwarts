@@ -40,11 +40,10 @@ function start() {
   addEventListeners();
 }
 
-let filteredStudents = [];
 let allStudents = [];
 const Student = {
-  firstName: null,
-  lastName: null,
+  firstname: null,
+  lastname: null,
   middleName: null,
   nickName: null,
   image: null,
@@ -60,7 +59,7 @@ async function getData() {
   console.log(data);
   prepareObjects(data);
   console.table(allStudents);
-  displayList();
+  displayList(allStudents);
 }
 
 //-----------------CLEAN DATA FROM THE STUDENT JSON FILE---------------
@@ -68,7 +67,7 @@ function prepareObjects(data) {
   data.forEach((jsonObject) => {
     const student = Object.create(Student);
     const nameArray = jsonObject.fullname.trim().split(" ");
-    let firstName, middleName, lastName, nickName, gender;
+    let firstname, middleName, lastname, nickName, gender;
     const nickNameIndex = nameArray.findIndex((name, index) => {
       return name.startsWith('"') && name.endsWith('"');
     });
@@ -79,38 +78,38 @@ function prepareObjects(data) {
       nameArray.splice(nickNameIndex, 1);
     }
     if (nameArray.length === 1) {
-      firstName = nameArray[0];
-      lastName = "";
+      firstname = nameArray[0];
+      lastname = "";
     } else if (nameArray.length === 2) {
-      firstName = nameArray[0];
+      firstname = nameArray[0];
       if (nameArray[1].includes("-")) {
-        lastName = nameArray[1].split("-").slice(-1)[0];
+        lastname = nameArray[1].split("-").slice(-1)[0];
         middleName = nameArray[1].split("-").slice(0, -1).join("-");
       } else {
-        lastName = nameArray[1];
+        lastname = nameArray[1];
       }
     } else {
-      firstName = nameArray[0];
+      firstname = nameArray[0];
       middleName = nameArray.slice(1, -1).join(" ");
       if (nameArray[nameArray.length - 1].includes("-")) {
-        lastName = nameArray[nameArray.length - 1].split("-").slice(-1)[0];
+        lastname = nameArray[nameArray.length - 1].split("-").slice(-1)[0];
         middleName +=
           " " +
           nameArray[nameArray.length - 1].split("-").slice(0, -1).join("-");
       } else {
-        lastName = nameArray[nameArray.length - 1];
+        lastname = nameArray[nameArray.length - 1];
       }
     }
 
     console.log(nickNameIndex);
 
-    if (lastName) {
-      student.lastName =
-        lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+    if (lastname) {
+      student.lastname =
+        lastname.charAt(0).toUpperCase() + lastname.slice(1).toLowerCase();
     }
 
-    student.firstName =
-      firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+    student.firstname =
+      firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
 
     if (middleName) {
       student.middleName =
@@ -121,7 +120,7 @@ function prepareObjects(data) {
         nickName.charAt(0).toUpperCase() + nickName.slice(1).toLowerCase();
     }
 
-    student.imgSrc = `./images/${lastName.toLowerCase()}_${firstName
+    student.imgSrc = `./images/${lastname.toLowerCase()}_${firstname
       .substring(0, 1)
       .toLowerCase()}.png`;
 
@@ -134,32 +133,6 @@ function prepareObjects(data) {
       jsonObject.house.trim().slice(1).toLowerCase();
     allStudents.push(student);
   });
-  filteredStudents = allStudents;
-}
-//--------------------DISPLAY STUDENT LIST--------------------
-function displayList() {
-  document.querySelector("#list").innerHTML = "";
-  filteredStudents.forEach(displayStudent);
-}
-/////////////
-
-//----------------CLONE STUDENTS TO THE HTML TEMPLATE FOR THE LIST-----------
-function displayStudent(student) {
-  const clone = document
-    .querySelector("template#student")
-    .content.cloneNode(true);
-  clone.querySelector("[data-field=firstname]").innerHTML = student.firstName;
-  // clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
-  // clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
-  clone.querySelector("[data-field=lastname]").innerHTML = student.lastName;
-  clone.querySelector("[data-field=house]").innerHTML = student.house;
-  clone.querySelector("[data-field=house]").innerHTML = student.house;
-  clone
-    .querySelector("[data-field=house]")
-    .classList.add(houseMap[student.house.toLowerCase()]);
-  clone.querySelector("[data-field=image]").src = student.imgSrc;
-  // clone.querySelector("[data-field=gender]").innerHTML = student.gender;
-  document.querySelector("#list").appendChild(clone);
 }
 
 //----------------------FILTER BY HOUSE-------------------------------
@@ -181,6 +154,7 @@ function selectFilter(event) {
 }
 
 function filterList(filter) {
+  let filteredStudents = [];
   if (filter === "gryffindor") {
     filteredStudents = allStudents.filter(
       (student) => student.house === "Gryffindor"
@@ -200,7 +174,7 @@ function filterList(filter) {
   } else {
     filteredStudents = allStudents;
   }
-  displayList();
+  return filteredStudents;
 }
 
 //--------------------SORTING--------------------
@@ -227,16 +201,21 @@ function selectSort(event) {
 function setSort(sortBy, sortDir) {
   settings.sortBy = sortBy;
   settings.sortDir = sortDir;
+
+  console.log("sortBy", settings.sortBy);
+  console.log("sortDir", settings.sortDir);
+
   buildList();
 }
 
-function sortList(sortedList) {
+function sortList(list) {
+  let sortedList;
   if (settings.sortDir === "desc") {
     direction = -1;
   } else {
     direction = 1;
   }
-  sortedList = sortedList.sort(sortByProperty);
+  sortedList = list.sort(sortByProperty);
   return sortedList;
 }
 
@@ -248,7 +227,33 @@ function sortByProperty(studentA, studentB) {
   }
 }
 function buildList() {
-  const sortedList = sortList(allStudents);
-  const filteredList = filterList(sortedList);
-  displayList(filteredList);
+  const filteredList = filterList(allStudents);
+  const sortedList = sortList(filteredList);
+  displayList(sortedList);
+}
+
+//--------------------DISPLAY STUDENT LIST--------------------
+function displayList(list) {
+  document.querySelector("#list").innerHTML = "";
+  list.forEach(displayStudent);
+}
+/////////////
+
+//----------------CLONE STUDENTS TO THE HTML TEMPLATE FOR THE LIST-----------
+function displayStudent(student) {
+  const clone = document
+    .querySelector("template#student")
+    .content.cloneNode(true);
+  clone.querySelector("[data-field=firstname]").innerHTML = student.firstname;
+  // clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
+  // clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
+  clone.querySelector("[data-field=lastname]").innerHTML = student.lastname;
+  clone.querySelector("[data-field=house]").innerHTML = student.house;
+  clone.querySelector("[data-field=house]").innerHTML = student.house;
+  clone
+    .querySelector("[data-field=house]")
+    .classList.add(houseMap[student.house.toLowerCase()]);
+  clone.querySelector("[data-field=image]").src = student.imgSrc;
+  // clone.querySelector("[data-field=gender]").innerHTML = student.gender;
+  document.querySelector("#list").appendChild(clone);
 }
