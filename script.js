@@ -135,8 +135,8 @@ function prepareObjects(data) {
   });
 }
 
-//----------------------FILTER BY HOUSE-------------------------------
 
+//----------------------------ADD EVENTLISTENERS------------------------------
 function addEventListeners() {
   document
     .querySelector("[data-action='filter']")
@@ -146,6 +146,8 @@ function addEventListeners() {
     .querySelectorAll("[data-action='sort']")
     .forEach((button) => button.addEventListener("click", selectSort));
 }
+
+//----------------------FILTER BY HOUSE-------------------------------
 
 function selectFilter(event) {
   const filter = event.target.value;
@@ -222,7 +224,6 @@ function sortByProperty(studentA, studentB) {
   }
 }
 
-
 //-------------------BUILD NEW LIST------------------------
 function buildList() {
   const filteredList = filterList(allStudents);
@@ -235,7 +236,6 @@ function displayList(list) {
   document.querySelector("#list").innerHTML = "";
   list.forEach(displayStudent);
 }
-
 
 //----------------CLONE STUDENTS TO THE HTML TEMPLATE FOR THE LIST-----------
 function displayStudent(student) {
