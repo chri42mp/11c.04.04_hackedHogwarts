@@ -150,29 +150,24 @@ function addEventListeners() {
 function selectFilter(event) {
   const filter = event.target.value;
   console.log(`Filter selected: ${filter}`);
-  filterList(filter);
+  settings.filter = filter;
+  buildList();
 }
 
-function filterList(filter) {
+function filterList(list) {
   let filteredStudents = [];
-  if (filter === "gryffindor") {
-    filteredStudents = allStudents.filter(
-      (student) => student.house === "Gryffindor"
-    );
-  } else if (filter === "hufflepuff") {
+  if (settings.filter === "gryffindor") {
+    filteredStudents = list.filter((student) => student.house === "Gryffindor");
+  } else if (settings.filter === "hufflepuff") {
     filteredStudents = allStudents.filter(
       (student) => student.house === "Hufflepuff"
     );
-  } else if (filter === "ravenclaw") {
-    filteredStudents = allStudents.filter(
-      (student) => student.house === "Ravenclaw"
-    );
-  } else if (filter === "slytherin") {
-    filteredStudents = allStudents.filter(
-      (student) => student.house === "Slytherin"
-    );
+  } else if (settings.filter === "ravenclaw") {
+    filteredStudents = list.filter((student) => student.house === "Ravenclaw");
+  } else if (settings.filter === "slytherin") {
+    filteredStudents = list.filter((student) => student.house === "Slytherin");
   } else {
-    filteredStudents = allStudents;
+    filteredStudents = list;
   }
   return filteredStudents;
 }
@@ -226,6 +221,9 @@ function sortByProperty(studentA, studentB) {
     return 1 * direction;
   }
 }
+
+
+//-------------------BUILD NEW LIST------------------------
 function buildList() {
   const filteredList = filterList(allStudents);
   const sortedList = sortList(filteredList);
@@ -237,7 +235,7 @@ function displayList(list) {
   document.querySelector("#list").innerHTML = "";
   list.forEach(displayStudent);
 }
-/////////////
+
 
 //----------------CLONE STUDENTS TO THE HTML TEMPLATE FOR THE LIST-----------
 function displayStudent(student) {
