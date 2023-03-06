@@ -19,7 +19,7 @@ function loop() {
     setTimeout(loop, 100);
   }
 }
-///////////////
+
 const settings = {
   filter: "all",
   sortBy: "name",
@@ -67,7 +67,7 @@ function prepareObjects(data) {
   data.forEach((jsonObject) => {
     const student = Object.create(Student);
     const nameArray = jsonObject.fullname.trim().split(" ");
-    let firstname, middleName, lastname, nickName, gender;
+    let firstname, middleName, lastname, nickName;
     const nickNameIndex = nameArray.findIndex((name, index) => {
       return name.startsWith('"') && name.endsWith('"');
     });
@@ -134,7 +134,6 @@ function prepareObjects(data) {
     allStudents.push(student);
   });
 }
-
 
 //----------------------------ADD EVENTLISTENERS------------------------------
 function addEventListeners() {
@@ -243,15 +242,34 @@ function displayStudent(student) {
     .querySelector("template#student")
     .content.cloneNode(true);
   clone.querySelector("[data-field=firstname]").innerHTML = student.firstname;
-  // clone.querySelector("[data-field=middlename]").innerHTML = student.middleName;
-  // clone.querySelector("[data-field=nickname]").innerHTML = student.nickName;
   clone.querySelector("[data-field=lastname]").innerHTML = student.lastname;
-  clone.querySelector("[data-field=house]").innerHTML = student.house;
   clone.querySelector("[data-field=house]").innerHTML = student.house;
   clone
     .querySelector("[data-field=house]")
     .classList.add(houseMap[student.house.toLowerCase()]);
   clone.querySelector("[data-field=image]").src = student.imgSrc;
-  // clone.querySelector("[data-field=gender]").innerHTML = student.gender;
+  clone.querySelector("[data-field=firstname]").innerHTML = student.firstname;
+  clone
+    .querySelector("article")
+    .addEventListener("click", () => showStudent(student));
   document.querySelector("#list").appendChild(clone);
 }
+
+function showStudent(student) {
+  console.log("showstudent");
+  const popup = document.querySelector("#popup");
+  popup.style.display = "flex";
+  popup.querySelector("[data-field=firstname]").textContent = student.firstname;
+  popup.querySelector("[data-field=middlename]").textContent =
+    student.middlename;
+  popup.querySelector("[data-field=house]").textContent = student.house;
+  popup
+    .querySelector("[data-field=house]")
+    .classList.add(houseMap[student.house.toLowerCase()]);
+  popup.querySelector("[data-field=image]").src = student.imgSrc;
+  popup.querySelector("[data-field=lastname]").textContent = student.lastname;
+  popup.querySelector("[data-field=gender]").textContent = student.gender;
+  popup.querySelector("[data-field=nickname]").textContent = student.nickName;
+  popup.addEventListener("click", () => (popup.style.display = "none"));
+}
+displayStudent();

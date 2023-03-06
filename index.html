@@ -15,8 +15,8 @@
       <img src="hogwarts.png" alt="" width="500px" />
     </div>
 
-    <p>
-      Filter by house:
+    <div class="filtering">
+      <p>Filter by house:</p>
       <select class="house-filter" data-action="filter">
         <option value="">All houses</option>
         <option value="gryffindor">Gryffindor</option>
@@ -24,7 +24,8 @@
         <option value="hufflepuff">Hufflepuff</option>
         <option value="slytherin">Slytherin</option>
       </select>
-    </p>
+    </div>
+
     <table>
       <tr id="sorting">
         <th>Sort by:</th>
@@ -54,6 +55,20 @@
         </div>
       </article>
     </template>
+
+    <div id="popup">
+      <article>
+        <div class="popup-container">
+          <img class="frame" data-field="image" src="" alt="" width="100px" />
+          <p data-field="firstname">Firstname</p>
+          <p data-field="middlename">Middlename</p>
+          <p data-field="nickname">Nickname</p>
+          <p data-field="lastname">Lastname</p>
+          <p data-field="gender">Gender</p>
+          <p class="house" data-field="house">House</p>
+        </div>
+      </article>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
