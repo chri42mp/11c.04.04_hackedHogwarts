@@ -120,9 +120,19 @@ function prepareObjects(data) {
         nickName.charAt(0).toUpperCase() + nickName.slice(1).toLowerCase();
     }
 
-    student.imgSrc = `./images/${lastname.toLowerCase()}_${firstname
-      .substring(0, 1)
-      .toLowerCase()}.png`;
+    if (student.firstname === "Leanne") {
+      student.imgSrc = `./images/empty.png`;
+    } else if (student.lastname === "Patil") {
+      student.imgSrc = `./images/${student.lastname.toLowerCase()}_${student.firstname.toLowerCase()}.png`;
+    } else if (student.lastname.includes("-")) {
+      student.imgSrc = `./images/${student.lastName
+        .split("-")[1]
+        .toLowerCase()}_${student.firstname.substring(0, 1).toLowerCase()}.png`;
+    } else {
+      student.imgSrc = `./images/${lastname.toLowerCase()}_${firstname
+        .substring(0, 1)
+        .toLowerCase()}.png`;
+    }
 
     student.gender =
       jsonObject.gender.charAt(0).toUpperCase() +

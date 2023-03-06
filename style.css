@@ -90,8 +90,8 @@ article {
 
 #popup article {
   background-image: none;
-  width: 50%;
-  height: 50%;
+  width: 30%;
+  height: 70%;
   background-image: url(popup.png);
 }
 .popup-container {
