@@ -1,11 +1,10 @@
-* {
-  margin: 0 auto;
-}
 main {
   max-width: 1100px;
+  margin: 0 auto;
 }
 .filtering {
   max-width: 1100px;
+  margin: 0 auto;
 }
 html {
   font-family: Apple Chancery;
@@ -13,9 +12,15 @@ html {
 body {
   background-image: url(AdobeStock_252754318.jpeg);
 }
+table {
+  margin: 0auto;
+  max-width: 1100px;
+}
 .splash {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 .splash h1 {
   display: flex;
@@ -34,19 +39,18 @@ body {
 #list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
+  gap: 6rem;
 }
 article {
   background-image: url(frame.png);
   background-size: cover;
   background-repeat: no-repeat;
-  height: 23rem;
-  width: 18rem;
 }
 .slytherin {
   background-image: url(slytherin.png);
   background-size: contain;
   background-repeat: no-repeat;
+  width: 100%;
 }
 .ravenclaw {
   background-image: url(rawenclaw.png);
@@ -68,8 +72,8 @@ article {
   color: white;
 }
 .container {
-  padding-block: 3rem;
-  width: 12.5rem;
+  padding-block: 2rem;
+  padding-inline: 3rem;
 }
 .id {
   text-align: center;
@@ -103,4 +107,30 @@ article {
   background-size: contain;
   background-repeat: no-repeat;
   padding: 2rem;
+}
+
+.close {
+  font-size: 2em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.expelledRed {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  user-select: none;
+  background-color: rgba(143, 143, 143, 0.356);
+}
+
+.expelledRed p {
+  transform: rotate(-18deg);
+  font-size: 120px;
+  font-weight: 800;
+  color: rgb(61, 8, 8);
 }

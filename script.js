@@ -155,6 +155,9 @@ function addEventListeners() {
     .querySelectorAll("[data-action='sort']")
     .forEach((button) => button.addEventListener("click", selectSort));
 }
+document
+  .querySelectorAll("popup-btns")
+  .forEach((button) => button.addEventListener("click"), expellStudent);
 
 //----------------------FILTER BY HOUSE-------------------------------
 
@@ -280,6 +283,11 @@ function showStudent(student) {
   popup.querySelector("[data-field=lastname]").textContent = student.lastname;
   popup.querySelector("[data-field=gender]").textContent = student.gender;
   popup.querySelector("[data-field=nickname]").textContent = student.nickName;
-  popup.addEventListener("click", () => (popup.style.display = "none"));
+  // popup.addEventListener("click", () => (popup.style.display = "none"));
+  document
+    .querySelector(".close")
+    .addEventListener("click", () => (popup.style.display = "none"));
 }
 displayStudent();
+
+function expellStudent() {}
