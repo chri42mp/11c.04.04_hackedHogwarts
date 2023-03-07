@@ -40,15 +40,18 @@ function start() {
   addEventListeners();
 }
 
+let expelledStudents = [];
+
 let allStudents = [];
 const Student = {
   firstname: null,
   lastname: null,
-  middleName: null,
-  nickName: null,
+  middlename: null,
+  nickname: null,
   image: null,
   house: null,
   gender: null,
+  expelled: false,
 };
 //------------------FETCH STUDENT DATA-----------------
 async function getData() {
@@ -67,14 +70,14 @@ function prepareObjects(data) {
   data.forEach((jsonObject) => {
     const student = Object.create(Student);
     const nameArray = jsonObject.fullname.trim().split(" ");
-    let firstname, middleName, lastname, nickName;
+    let firstname, middlename, lastname, nickname;
     const nickNameIndex = nameArray.findIndex((name, index) => {
       return name.startsWith('"') && name.endsWith('"');
     });
     if (nickNameIndex !== -1) {
-      nickName = nameArray[nickNameIndex].replaceAll(`"`, "");
-      nickName =
-        nickName.charAt(0).toUpperCase() + nickName.slice(1).toLowerCase();
+      nickname = nameArray[nickNameIndex].replaceAll(`"`, "");
+      nickname =
+        nickname.charAt(0).toUpperCase() + nickname.slice(1).toLowerCase();
       nameArray.splice(nickNameIndex, 1);
     }
     if (nameArray.length === 1) {
@@ -84,16 +87,16 @@ function prepareObjects(data) {
       firstname = nameArray[0];
       if (nameArray[1].includes("-")) {
         lastname = nameArray[1].split("-").slice(-1)[0];
-        middleName = nameArray[1].split("-").slice(0, -1).join("-");
+        middlename = nameArray[1].split("-").slice(0, -1).join("-");
       } else {
         lastname = nameArray[1];
       }
     } else {
       firstname = nameArray[0];
-      middleName = nameArray.slice(1, -1).join(" ");
+      middlename = nameArray.slice(1, -1).join(" ");
       if (nameArray[nameArray.length - 1].includes("-")) {
         lastname = nameArray[nameArray.length - 1].split("-").slice(-1)[0];
-        middleName +=
+        middlename +=
           " " +
           nameArray[nameArray.length - 1].split("-").slice(0, -1).join("-");
       } else {
@@ -111,13 +114,13 @@ function prepareObjects(data) {
     student.firstname =
       firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
 
-    if (middleName) {
-      student.middleName =
-        middleName.charAt(0).toUpperCase() + middleName.slice(1).toLowerCase();
+    if (middlename) {
+      student.middlename =
+        middlename.charAt(0).toUpperCase() + middlename.slice(1).toLowerCase();
     }
-    if (nickName) {
-      student.nickName =
-        nickName.charAt(0).toUpperCase() + nickName.slice(1).toLowerCase();
+    if (nickname) {
+      student.nickname =
+        nickname.charAt(0).toUpperCase() + nickname.slice(1).toLowerCase();
     }
 
     if (student.firstname === "Leanne") {
@@ -154,10 +157,9 @@ function addEventListeners() {
   document
     .querySelectorAll("[data-action='sort']")
     .forEach((button) => button.addEventListener("click", selectSort));
+
+  document.querySelector("#expell").addEventListener("click", expellStudent);
 }
-document
-  .querySelectorAll("popup-btns")
-  .forEach((button) => button.addEventListener("click"), expellStudent);
 
 //----------------------FILTER BY HOUSE-------------------------------
 
@@ -288,6 +290,30 @@ function showStudent(student) {
     .querySelector(".close")
     .addEventListener("click", () => (popup.style.display = "none"));
 }
-displayStudent();
 
-function expellStudent() {}
+
+
+//---------------------------EXPELL-------------------------------
+function expellStudent() {
+  document.querySelector("#expell").classList.add("expelledRed");
+  document.querySelector("#expell").innerText = "EXPELLED";
+}
+
+//---------------HACKING---------------------
+// function addMeToList() {
+//   let thisStudent = createObjectOfMe();
+// }
+
+// function createObjectOfMe() {
+//   return {
+//     firstname: "Christine",
+//     middlename: "Susanne",
+//     lastname: "Ramm",
+//     nickname: "Chrisser",
+//     gender: "girl",
+//     house: "slytherin",
+//     isPrefect: false,
+//     isInqSquad: false,
+//     bloodStatus: "Pureblood",
+//   };
+// }
