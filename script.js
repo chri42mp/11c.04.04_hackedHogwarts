@@ -19,11 +19,12 @@ function loop() {
     setTimeout(loop, 100);
   }
 }
-
+let bloodData;
 const settings = {
   filter: "all",
   sortBy: "name",
   sortDir: "asc",
+  expelled: false,
 };
 const houseMap = {
   slytherin: "slytherin",
@@ -36,10 +37,11 @@ window.addEventListener("DOMContentLoaded", start);
 
 function start() {
   console.log("ready");
-  getData();
+  getBlood();
   addEventListeners();
 }
 
+let popupStudent = null;
 let expelledStudents = [];
 
 let allStudents = [];
@@ -52,16 +54,27 @@ const Student = {
   house: null,
   gender: null,
   expelled: false,
+  bloodstatus: "",
 };
 //------------------FETCH STUDENT DATA-----------------
+async function getBlood() {
+  const responsBlood = await fetch(
+    "https://petlatkea.dk/2021/hogwarts/families.json"
+  );
+  bloodData = await responsBlood.json();
+  getData();
+}
 async function getData() {
   const response = await fetch(
     "https://petlatkea.dk/2021/hogwarts/students.json"
   );
+
   const data = await response.json();
+
   console.log(data);
+
   prepareObjects(data);
-  console.table(allStudents);
+  //  console.table(allStudents);
   displayList(allStudents);
 }
 
@@ -144,8 +157,14 @@ function prepareObjects(data) {
     student.house =
       jsonObject.house.trim().charAt(0).toUpperCase() +
       jsonObject.house.trim().slice(1).toLowerCase();
+
+    student.bloodstatus = addBloodStatus(student, bloodData);
+
     allStudents.push(student);
   });
+
+  console.log(allStudents);
+  return allStudents;
 }
 
 //----------------------------ADD EVENTLISTENERS------------------------------
@@ -159,6 +178,16 @@ function addEventListeners() {
     .forEach((button) => button.addEventListener("click", selectSort));
 
   document.querySelector("#expell").addEventListener("click", expellStudent);
+
+  document.querySelector("#expelledStudents").addEventListener("click", () => {
+    settings.expelled = true;
+    buildList();
+  });
+
+  document.querySelector("#activeStudents").addEventListener("click", () => {
+    settings.expelled = false;
+    buildList();
+  });
 }
 
 //----------------------FILTER BY HOUSE-------------------------------
@@ -175,9 +204,7 @@ function filterList(list) {
   if (settings.filter === "gryffindor") {
     filteredStudents = list.filter((student) => student.house === "Gryffindor");
   } else if (settings.filter === "hufflepuff") {
-    filteredStudents = allStudents.filter(
-      (student) => student.house === "Hufflepuff"
-    );
+    filteredStudents = list.filter((student) => student.house === "Hufflepuff");
   } else if (settings.filter === "ravenclaw") {
     filteredStudents = list.filter((student) => student.house === "Ravenclaw");
   } else if (settings.filter === "slytherin") {
@@ -240,7 +267,11 @@ function sortByProperty(studentA, studentB) {
 
 //-------------------BUILD NEW LIST------------------------
 function buildList() {
-  const filteredList = filterList(allStudents);
+  let students = allStudents;
+  if (settings.expelled) {
+    students = expelledStudents;
+  }
+  const filteredList = filterList(students);
   const sortedList = sortList(filteredList);
   displayList(sortedList);
 }
@@ -271,6 +302,7 @@ function displayStudent(student) {
 }
 
 function showStudent(student) {
+  popupStudent = student;
   console.log("showstudent");
   const popup = document.querySelector("#popup");
   popup.style.display = "flex";
@@ -285,35 +317,58 @@ function showStudent(student) {
   popup.querySelector("[data-field=lastname]").textContent = student.lastname;
   popup.querySelector("[data-field=gender]").textContent = student.gender;
   popup.querySelector("[data-field=nickname]").textContent = student.nickName;
+  popup.querySelector("[data-field=bloodstatus]").textContent =
+    student.bloodstatus;
   // popup.addEventListener("click", () => (popup.style.display = "none"));
-  document
-    .querySelector(".close")
-    .addEventListener("click", () => (popup.style.display = "none"));
+  document.querySelector(".close").addEventListener("click", () => {
+    document.querySelector("#expelledRed").classList.remove("expelledRed");
+    popup.style.display = "none";
+  });
 }
-
-
 
 //---------------------------EXPELL-------------------------------
 function expellStudent() {
-  document.querySelector("#expell").classList.add("expelledRed");
-  document.querySelector("#expell").innerText = "EXPELLED";
+  if (expelledStudents.find((student) => student === popupStudent)) {
+    return;
+  }
+  allStudents = allStudents.filter((student) => student !== popupStudent);
+  expelledStudents.push(popupStudent);
+  document.querySelector("#expelledRed").classList.add("expelledRed");
+  buildList();
 }
 
 //---------------HACKING---------------------
-// function addMeToList() {
-//   let thisStudent = createObjectOfMe();
-// }
+function addMeToList() {
+  let thisStudent = createObjectOfMe();
+  allStudents.push(thisStudent);
+}
 
-// function createObjectOfMe() {
-//   return {
-//     firstname: "Christine",
-//     middlename: "Susanne",
-//     lastname: "Ramm",
-//     nickname: "Chrisser",
-//     gender: "girl",
-//     house: "slytherin",
-//     isPrefect: false,
-//     isInqSquad: false,
-//     bloodStatus: "Pureblood",
-//   };
-// }
+function createObjectOfMe() {
+  return {
+    firstname: "Christine",
+    middlename: "Susanne",
+    lastname: "Ramm",
+    nickname: "Chrisser",
+    gender: "girl",
+    house: "slytherin",
+    isPrefect: false,
+    isInqSquad: false,
+    bloodStatus: "Pureblood",
+  };
+}
+
+//-----------Bloodstatus------------
+
+function addBloodStatus(student, bloodData) {
+  let bloodStatus = "muggle";
+
+  const isPure = bloodData.pure.some((element) => student.lastname === element);
+  const isHalf = bloodData.half.some((element) => student.lastname === element);
+
+  if (isHalf) {
+    bloodStatus = "half";
+  } else if (isPure) {
+    bloodStatus = "pure";
+  }
+  return bloodStatus;
+}

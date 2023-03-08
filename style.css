@@ -124,6 +124,7 @@ article {
 }
 
 .expelledRed {
+  display: block !important;
   position: absolute;
   top: 50%;
   left: 12%;
@@ -134,4 +135,7 @@ article {
   font-size: 72px;
   font-weight: 800;
   color: rgb(61, 8, 8);
+}
+.hidden {
+  display: none;
 }
