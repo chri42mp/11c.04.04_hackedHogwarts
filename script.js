@@ -179,6 +179,10 @@ function addEventListeners() {
 
   document.querySelector("#expell").addEventListener("click", expellStudent);
 
+  const searchBar = document.querySelector("#searchBar");
+
+  searchBar.addEventListener("keyup", searchFunction);
+
   document.querySelector("#expelledStudents").addEventListener("click", () => {
     settings.expelled = true;
     buildList();
@@ -188,6 +192,17 @@ function addEventListeners() {
     settings.expelled = false;
     buildList();
   });
+}
+
+//---------SEARCHING---------------
+function searchFunction(event) {
+  const searchString = event.target.value.toLowerCase();
+  let filteredStudents = allStudents;
+  filteredStudents = filteredStudents.filter((student) => {
+    const fullName = `${student.firstname} ${student.lastname}`;
+    return fullName.toLowerCase().includes(searchString);
+  });
+  displayList(filteredStudents);
 }
 
 //----------------------FILTER BY HOUSE-------------------------------
@@ -310,6 +325,9 @@ function showStudent(student) {
   popup.querySelector("[data-field=middlename]").textContent =
     student.middlename;
   popup.querySelector("[data-field=house]").textContent = student.house;
+  popup
+    .querySelector("[data-field=house]")
+    .classList.remove("slytherin", "ravenclaw", "hufflepuff", "gryffindor");
   popup
     .querySelector("[data-field=house]")
     .classList.add(houseMap[student.house.toLowerCase()]);
