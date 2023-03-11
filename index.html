@@ -26,6 +26,7 @@
       </select>
       <button id="expelledStudents">Expelled students</button>
       <button id="activeStudents">Active students</button>
+      <button id="prefects">Prefect students</button>
     </div>
     <div id="searchWrapper">
       <input
@@ -61,6 +62,7 @@
           <!-- <p data-field="middlename">Middlename</p> -->
           <!-- <p data-field="nickname">Nickname</p> -->
           <p data-field="lastname">Lastname</p>
+          <p data-field="prefect"></p>
           <!-- <p data-field="gender">Gender</p> -->
         </div>
       </article>
@@ -77,15 +79,37 @@
           <p data-field="lastname">Lastname</p>
           <p data-field="gender">Gender</p>
           <p data-field="bloodstatus">Bloodstatus</p>
+          <p data-field="prefect"></p>
+          <p id="prefectText">Prefect:</p>
           <p class="house" data-field="house">House</p>
           <div id="expelledRed" class="hidden">EXPELLED</div>
           <div class="popup-btns">
             <button id="expell">Expell student</button>
             <button>Add to squad</button>
-            <button>Add prefect</button>
+            <button id="prefectBtn">Add as prefect</button>
           </div>
         </div>
       </article>
+    </div>
+    <!-- DIALOG 1  -->
+    <div id="remove_AorB" class="modal hide">
+      <div class="dialog">
+        <h1>Warning:</h1>
+        <button class="closebtn_dialog">X</button>
+        <p>
+          There can not be any more than 2 prefects from each house.
+          <br />
+          Do you wish to remove one of the exisitng prefects?
+        </p>
+        <div class="sideBYside">
+          <button id="remove_a">
+            Remove <span data-field="prefectA">A</span>
+          </button>
+          <button id="remove_b">
+            Remove <span data-field="prefectB">B</span>
+          </button>
+        </div>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
