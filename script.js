@@ -1,4 +1,5 @@
 "use strict";
+
 //-----------------------TYPEWRITER---------------------
 const str = document.querySelector("#typewriter").textContent;
 document.querySelector("#typewriter").textContent = "";
@@ -25,6 +26,7 @@ const settings = {
   sortBy: "name",
   sortDir: "asc",
   expelled: false,
+  prefect: false,
 };
 const houseMap = {
   slytherin: "slytherin",
@@ -44,6 +46,7 @@ function start() {
 let popupStudent = null;
 let expelledStudents = [];
 let prefectStudents = [];
+let isHacked = false;
 
 let allStudents = [];
 const Student = {
@@ -56,6 +59,7 @@ const Student = {
   gender: null,
   expelled: false,
   bloodstatus: "",
+  inquisitor: false,
 };
 //------------------FETCH STUDENT DATA-----------------
 async function getBlood() {
@@ -76,7 +80,7 @@ async function getData() {
 
   prepareObjects(data);
   //  console.table(allStudents);
-  displayList(allStudents);
+  buildList();
 }
 
 //-----------------CLEAN DATA FROM THE STUDENT JSON FILE---------------
@@ -188,6 +192,13 @@ function addEventListeners() {
 
   document.querySelector("#hack").addEventListener("click", hackTheSystem);
 
+  document.querySelector("#inqSquad").addEventListener("click", makeInquisitor);
+
+  document.querySelector("#prefects").addEventListener("click", () => {
+    settings.prefect = true;
+    buildList();
+  });
+
   document.querySelector("#expelledStudents").addEventListener("click", () => {
     settings.expelled = true;
     buildList();
@@ -291,9 +302,13 @@ function buildList() {
   if (settings.expelled) {
     students = expelledStudents;
   }
+  if (settings.prefect) {
+    students = prefectStudents;
+  }
   const filteredList = filterList(students);
   const sortedList = sortList(filteredList);
   displayList(sortedList);
+  updateStudentCount(sortedList.length);
 }
 
 //--------------------DISPLAY STUDENT LIST--------------------
@@ -310,14 +325,6 @@ function displayStudent(student) {
   clone.querySelector("[data-field=firstname]").innerHTML = student.firstname;
   clone.querySelector("[data-field=lastname]").innerHTML = student.lastname;
   clone.querySelector("[data-field=house]").innerHTML = student.house;
-  clone.querySelector("[data-field=prefect]").textContent = student.prefect;
-  if (student.prefect) {
-    document.querySelector("#prefectText").textContent = "Prefect: Yes";
-    clone.querySelector("[data-field=prefect]").textContent = "Yes";
-  } else {
-    document.querySelector("#prefectText").textContent = "Prefect: No";
-    clone.querySelector("[data-field=prefect]").textContent = "No";
-  }
   clone
     .querySelector("[data-field=house]")
     .classList.add(houseMap[student.house.toLowerCase()]);
@@ -339,12 +346,16 @@ function showStudent(student) {
     student.middlename;
   popup.querySelector("[data-field=house]").textContent = student.house;
   if (student.prefect) {
-    document.querySelector("#prefectText").textContent = "Prefect: Yes";
-    popup.querySelector("[data-field=prefect]").textContent = "Yes";
+    popup.querySelector("#prefectText").textContent = "Prefect: Yes";
   } else {
-    document.querySelector("#prefectText").textContent = "Prefect: No";
-    popup.querySelector("[data-field=prefect]").textContent = "No";
+    popup.querySelector("#prefectText").textContent = "Prefect: No";
   }
+  if (student.inquisitor) {
+    popup.querySelector("#inquisitorText").textContent = "Inquisitor: Yes";
+  } else {
+    popup.querySelector("#inquisitorText").textContent = "Inquisitor: No";
+  }
+
   popup
     .querySelector("[data-field=house]")
     .classList.remove("slytherin", "ravenclaw", "hufflepuff", "gryffindor");
@@ -380,12 +391,13 @@ function expellStudent() {
 function hackTheSystem() {
   console.log("the system has been hacked");
   addMeToList();
+  messBlood();
+  buildList();
 }
 
 function addMeToList() {
   let thisStudent = createObjectOfMe();
   allStudents.push(thisStudent);
-  buildList();
 }
 
 function createObjectOfMe() {
@@ -400,6 +412,21 @@ function createObjectOfMe() {
     isInqSquad: false,
     bloodStatus: "Pureblood",
   };
+}
+
+function messBlood() {
+  allStudents.forEach((student) => {
+    const bloodStatuses = ["pure", "half", "muggle"];
+    const newBloodStatus =
+      bloodStatuses[Math.floor(Math.random() * bloodStatuses.length)];
+    if (student.bloodstatus === "pure") {
+      student.bloodstatus = newBloodStatus;
+    } else {
+      student.bloodstatus = "pure";
+    }
+
+    buildList();
+  });
 }
 
 //-----------Bloodstatus------------
@@ -428,6 +455,7 @@ function makePrefect() {
   }
 
   buildList();
+  showStudent(popupStudent);
 }
 
 // TRY MAKE PREFECT
@@ -445,6 +473,8 @@ function tryMakePrefect(selectedPrefect) {
 
 function makeStudentPrefect(popupStudent) {
   popupStudent.prefect = true;
+  allStudents = allStudents.filter((student) => student !== popupStudent);
+  prefectStudents.push(popupStudent);
 }
 
 function removeOthers(others) {
@@ -476,6 +506,10 @@ function closeDialog() {
   document
     .querySelector("#remove_AorB #remove_b")
     .removeEventListener("click", clickRemoveB);
+  document.querySelector("#inqWarning").classList.add("hide");
+  document
+    .querySelector("#inqWarning .closebtn_dialog")
+    .removeEventListener("click", closeDialog);
 }
 
 function clickRemoveA(studentA, selectedPrefect) {
@@ -498,4 +532,42 @@ function removePrefect(others) {
 
 function makeNewPrefect(student) {
   student.prefect = true;
+}
+
+//--------COUNTER----------
+
+const studentCount = document.getElementById("student-count");
+
+// Define a function to update the student count display
+function updateStudentCount(count) {
+  studentCount.textContent = `Number of students: ${count}`;
+}
+
+//-----------INQ SQUAD----------
+
+// INQUISITOR
+function makeInquisitor(student) {
+  let isPure;
+  let isSlytHouse;
+
+  isPure = student.bloodstatus === "pure";
+  isSlytHouse = student.house === "slytherin";
+  if (isPure) {
+    student.inquisitor = true;
+    console.log("inq is true");
+  } else if (isSlytHouse) {
+    student.inquisitor = true;
+  } else {
+    console.log("nu skal vi lave inquisitor");
+    tryMakeInquisitor();
+  }
+  buildList();
+}
+
+function tryMakeInquisitor() {
+  // console.log("nu kommer der warning);
+  document.querySelector("#inqWarning").classList.remove("hide");
+  document
+    .querySelector("#inqWarning .closebtn_dialog")
+    .addEventListener("click", closeDialog);
 }

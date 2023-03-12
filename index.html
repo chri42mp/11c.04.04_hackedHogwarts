@@ -12,11 +12,12 @@
       <h1 id="typewriter" class="typewritten">
         List of Hogwarts students year 1991
       </h1>
+      <button id="hack"><img src="dementor.png" width="60px" alt="" /></button>
       <img src="hogwarts.png" alt="" width="500px" />
     </div>
 
     <div class="filtering">
-      <p>Filter by house:</p>
+      <img class="hat" src="hat-curser.png" width="50px" alt="" />
       <select class="house-filter" data-action="filter">
         <option value="">All houses</option>
         <option value="gryffindor">Gryffindor</option>
@@ -27,8 +28,8 @@
       <button id="expelledStudents">Expelled students</button>
       <button id="activeStudents">Active students</button>
       <button id="prefects">Prefect students</button>
-      <button id="hack"></button>
     </div>
+
     <div id="searchWrapper">
       <input
         id="searchBar"
@@ -37,6 +38,8 @@
         placeholder="Search a student"
       />
     </div>
+
+    <p id="student-count">1</p>
 
     <table>
       <tr id="sorting">
@@ -49,6 +52,7 @@
         </th>
       </tr>
     </table>
+
     <main id="list">
       <!-- rows of data will go here -->
     </main>
@@ -72,22 +76,24 @@
     <div id="popup">
       <article>
         <div class="popup-container">
-          <p class="close">&#10008;</p>
-          <img class="frame" data-field="image" src="" alt="" width="100px" />
-          <p data-field="firstname">Firstname</p>
-          <p data-field="middlename">Middlename</p>
-          <p data-field="nickname">Nickname</p>
-          <p data-field="lastname">Lastname</p>
-          <p data-field="gender">Gender</p>
-          <p data-field="bloodstatus">Bloodstatus</p>
-          <p data-field="prefect"></p>
-          <p id="prefectText">Prefect:</p>
-          <p class="house" data-field="house">House</p>
-          <div id="expelledRed" class="hidden">EXPELLED</div>
-          <div class="popup-btns">
-            <button id="expell">Expell student</button>
-            <button>Add to squad</button>
-            <button id="prefectBtn">Add as prefect</button>
+          <div class="popup-content">
+            <p class="close">&#10008;</p>
+            <img class="frame" data-field="image" src="" alt="" width="100px" />
+            <p data-field="firstname">Firstname</p>
+            <p data-field="middlename">Middlename</p>
+            <p data-field="nickname">Nickname</p>
+            <p data-field="lastname">Lastname</p>
+            <p data-field="gender">Gender</p>
+            <p data-field="bloodstatus">Bloodstatus</p>
+            <p id="prefectText">Prefect:</p>
+            <p id="inquisitorText">Part of inqusitorial squad:</p>
+            <p class="house" data-field="house">House</p>
+            <div id="expelledRed" class="hidden">EXPELLED</div>
+            <div class="popup-btns">
+              <button id="expell">Expell student</button>
+              <button id="inqSquad">Add to squad</button>
+              <button id="prefectBtn">Add as prefect</button>
+            </div>
           </div>
         </div>
       </article>
@@ -110,6 +116,18 @@
             Remove <span data-field="prefectB">B</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- DIALOG 2 - INQUISITOR  -->
+    <div id="inqWarning" class="modal hide">
+      <div class="dialog">
+        <h1>Warning !</h1>
+        <button class="closebtn_dialog">X</button>
+        <p>
+          Only pure-blooded or students from Slytherin can be a member of the
+          inquisitorial squad.
+        </p>
       </div>
     </div>
 

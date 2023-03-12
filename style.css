@@ -1,10 +1,5 @@
-main {
-  max-width: 1100px;
-  margin: 0 auto;
-}
 .filtering {
-  max-width: 1100px;
-  margin: 0 auto;
+  position: relative;
 }
 html {
   font-family: Apple Chancery;
@@ -13,14 +8,12 @@ body {
   background-image: url(AdobeStock_252754318.jpeg);
 }
 table {
-  margin: 0auto;
-  max-width: 1100px;
+  display: flex;
+  justify-content: center;
 }
 .splash {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 .splash h1 {
   display: flex;
@@ -49,23 +42,19 @@ article {
 .slytherin {
   background-image: url(slytherin.png);
   background-size: contain;
-  background-repeat: no-repeat;
   width: 100%;
 }
 .ravenclaw {
   background-image: url(rawenclaw.png);
   background-size: contain;
-  background-repeat: no-repeat;
 }
 .hufflepuff {
   background-image: url(hufflepuff.png);
   background-size: contain;
-  background-repeat: no-repeat;
 }
 .gryffindor {
   background-image: url(griffindor.png);
   background-size: contain;
-  background-repeat: no-repeat;
 }
 .house {
   text-align: end;
@@ -73,6 +62,7 @@ article {
 }
 .container {
   padding-inline: 3rem;
+  padding-block: 2rem;
 }
 .id {
   text-align: center;
@@ -97,13 +87,11 @@ article {
 }
 .popup-container {
   position: relative;
-  flex-direction: column;
 }
 .frame {
-  background-image: url(frame.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  padding: 2rem;
+  position: absolute;
+  top: 36px;
+  right: 30px;
 }
 
 .close {
@@ -167,4 +155,37 @@ article {
 }
 .hide {
   display: none;
+}
+
+#student-count {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+#searchWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+body {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#student-count {
+  text-align: center;
+}
+#hack {
+  position: absolute;
+  top: 15%;
+  right: 48%;
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+}
+.hat {
+  position: absolute;
+  top: -33px;
+  left: -13px;
+}
+.popup-content {
+  padding: 3rem;
 }
