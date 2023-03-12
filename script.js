@@ -186,6 +186,8 @@ function addEventListeners() {
 
   document.querySelector("#prefectBtn").addEventListener("click", makePrefect);
 
+  document.querySelector("#hack").addEventListener("click", hackTheSystem);
+
   document.querySelector("#expelledStudents").addEventListener("click", () => {
     settings.expelled = true;
     buildList();
@@ -374,9 +376,16 @@ function expellStudent() {
 }
 
 //---------------HACKING---------------------
+
+function hackTheSystem() {
+  console.log("the system has been hacked");
+  addMeToList();
+}
+
 function addMeToList() {
   let thisStudent = createObjectOfMe();
   allStudents.push(thisStudent);
+  buildList();
 }
 
 function createObjectOfMe() {
