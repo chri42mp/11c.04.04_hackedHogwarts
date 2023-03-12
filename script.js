@@ -537,8 +537,6 @@ function makeNewPrefect(student) {
 //--------COUNTER----------
 
 const studentCount = document.getElementById("student-count");
-
-// Define a function to update the student count display
 function updateStudentCount(count) {
   studentCount.textContent = `Number of students: ${count}`;
 }
@@ -565,7 +563,6 @@ function makeInquisitor(student) {
 }
 
 function tryMakeInquisitor() {
-  // console.log("nu kommer der warning);
   document.querySelector("#inqWarning").classList.remove("hide");
   document
     .querySelector("#inqWarning .closebtn_dialog")

@@ -82,11 +82,13 @@ article {
 }
 
 #popup article {
-  background-image: none;
   background-image: url(popup.png);
+  background-size: contain;
 }
 .popup-container {
   position: relative;
+  width: 400px;
+  height: 600px;
 }
 .frame {
   position: absolute;
@@ -106,13 +108,13 @@ article {
 .expelledRed {
   display: block !important;
   position: absolute;
-  top: 50%;
-  left: 12%;
+  top: 60%;
+  left: 5%;
   text-align: center;
   transform: translate(-50%, -50%);
   border: none;
   transform: rotate(-18deg);
-  font-size: 72px;
+  font-size: 62px;
   font-weight: 800;
   color: rgb(61, 8, 8);
 }
@@ -187,5 +189,6 @@ body {
   left: -13px;
 }
 .popup-content {
-  padding: 3rem;
+  padding-inline: 1rem;
+  padding-block: 5rem;
 }
